@@ -28,13 +28,13 @@ const Pagination = () => {
 
     const nextPage = () => {
         if (currentPage < Math.ceil(data.length / perPage)) {
-            setCurrentPage(currentPage + 1);
+            setCurrentPage((prev) => prev + 1);
         }
     };
 
     const prevPage = () => {
         if (currentPage > 1) {
-            setCurrentPage(currentPage - 1);
+            setCurrentPage((prev) => prev - 1)
         }
     };
 
