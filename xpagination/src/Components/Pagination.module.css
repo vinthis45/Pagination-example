@@ -1,0 +1,66 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tableContainer {
+    width: 80%;
+    overflow-x: auto;
+    padding-left: 20px;
+    border: 1px solid #888;
+    border-collapse: collapse;
+    text-align: left;
+
+
+}
+
+.tableHead {
+    background-color: #1CAC78;
+    padding-left: 20px;
+    color: white;
+    
+}
+
+.tableBody tr td{
+    border-bottom: 1px solid #ddd;
+    
+}
+
+.tableHead th,
+.tableBody td {
+    padding: 12px;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+
+    .tableHead th,
+    .tableBody td {
+        padding: 8px;
+        font-size: 13px;
+
+    }
+}
+
+
+button {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin: 20px;
+}
+
+.nextButton,
+.prevButton {
+    background-color: #1CAC78;
+    color: white;
+}
+
+.nextButton:disabled,
+.prevButton:disabled {
+    background-color: #ddd;
+    color: #888;
+    cursor: not-allowed;
+}
