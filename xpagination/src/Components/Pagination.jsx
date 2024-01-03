@@ -5,7 +5,7 @@ const Pagination = () => {
   const perPage = 10;
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);  // Track loading state
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -23,7 +23,7 @@ const Pagination = () => {
 
       const result = await response.json();
       setData(result);
-      setIsLoading(false);  
+      setIsLoading(false);
     } catch (error) {
       alert('Failed to fetch data');
     }
@@ -48,34 +48,32 @@ const Pagination = () => {
   return (
     <div className={styles.container}>
       <h1>Employee Data Table</h1>
-      <table className={styles.tableContainer}>
-        {/* Table Header */}
-        <thead className={styles.tableHead}>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-          </tr>
-        </thead>
-        {/* Table Body */}
-        <tbody className={styles.tableBody}>
-          {isLoading ? (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <table className={styles.tableContainer}>
+          {/* Table Header */}
+          <thead className={styles.tableHead}>
             <tr>
-              <td colSpan="4">Loading...</td>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
             </tr>
-          ) : (
-            currentData.map((employee) => (
+          </thead>
+          {/* Table Body */}
+          <tbody className={styles.tableBody}>
+            {currentData.map((employee) => (
               <tr key={employee.id}>
                 <td>{employee.id}</td>
                 <td>{employee.name}</td>
                 <td>{employee.email}</td>
                 <td>{employee.role}</td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      )}
       {/* Pagination Buttons */}
       <div>
         <button className={styles.prevButton} onClick={prevPage}>
