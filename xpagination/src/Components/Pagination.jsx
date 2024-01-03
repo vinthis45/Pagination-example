@@ -25,6 +25,7 @@ const Pagination = () => {
       setData(result);
       setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);  // Update loading state even on error
       alert('Failed to fetch data');
     }
   };
