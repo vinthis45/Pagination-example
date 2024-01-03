@@ -5,9 +5,7 @@ const Pagination = () => {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
-    useEffect(() => {
-        fetchData();
-    }, [currentPage]);
+    
 
     const fetchData = async () => {
         try {
@@ -23,6 +21,10 @@ const Pagination = () => {
             alert('Failed to fetch data');
         }
     };
+
+    useEffect(() => {
+        fetchData();
+    }, [currentPage]);
 
     const nextPage = () => {
         if (currentPage < Math.ceil(data.length / perPage)) {
@@ -67,7 +69,7 @@ const Pagination = () => {
             </table>
             {/* Pagination Buttons */}
             <div>
-                <button className={styles.prevButton} onClick={prevPage} disabled={currentPage === 1}>
+                <button className={styles.prevButton} onClick={prevPage}>
                     Previous
                 </button>
                 <span className={styles.pageNumber}>{currentPage}</span>
