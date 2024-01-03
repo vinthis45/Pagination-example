@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import styles from "./Pagination.module.css"
+import styles from "./Pagination.module.css";
+
 const Pagination = () => {
     const perPage = 10;
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
 
-    
+    useEffect(() => {
+        fetchData();
+    }, [currentPage]);
 
     const fetchData = async () => {
         try {
             const response = await fetch(
                 'https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json'
             );
+
+            await new Promise(resolve => setTimeout(resolve, 500));
+
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
+
             const result = await response.json();
             setData(result);
         } catch (error) {
@@ -22,19 +29,15 @@ const Pagination = () => {
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [currentPage]);
-
     const nextPage = () => {
         if (currentPage < Math.ceil(data.length / perPage)) {
-            setCurrentPage((prev) => prev + 1);
+            setCurrentPage(currentPage + 1);
         }
     };
 
     const prevPage = () => {
         if (currentPage > 1) {
-            setCurrentPage((prev) => prev - 1)
+            setCurrentPage(currentPage - 1);
         }
     };
 
@@ -76,7 +79,6 @@ const Pagination = () => {
                 <button className={styles.nextButton} onClick={nextPage} disabled={currentPage === Math.ceil(data.length / perPage)}>
                     Next
                 </button>
-
             </div>
         </div>
     );
