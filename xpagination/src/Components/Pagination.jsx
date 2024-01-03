@@ -7,6 +7,21 @@ const Pagination = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
+  const memoizedData = useMemo(() => {
+    const cachedData = localStorage.getItem('cachedData');
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+    return data;
+  }, [data]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      localStorage.setItem('cachedData', JSON.stringify(memoizedData));
+    }
+  }, [memoizedData, isLoading]);
+
+  
   useEffect(() => {
     fetchData();
   }, [currentPage]);
