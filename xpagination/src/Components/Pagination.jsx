@@ -5,24 +5,20 @@ const Pagination = () => {
   const perPage = 10;
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [error, setError] = useState("");
   
-  const fetchData = async () => {
+  async function fetchData() {
     try {
-      const response = await fetch(
-        'https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json'
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-
-      const result = await response.json();
-      setData(result);
+       const response = await fetch('https://geektrust.s3-ap-southeast-1.amazonaws.com/adminui-problem/members.json');
+       if (!response.ok) {
+         throw new Error('Failed to fetch data');
+       }
+       const data = await response.json();
+       setData(data);
     } catch (error) {
-      alert('Failed to fetch data');
+       setError(true);
     }
-  };
+   }
 
   useEffect(() => {
     fetchData();
@@ -51,6 +47,7 @@ const Pagination = () => {
 
   return (
     <div className={styles.container}>
+    {error && <div>Failed to fetch data. Please try again later.</div>}
       <h1>Employee Data Table</h1>
         <table className={styles.tableContainer}>
           {/* Table Header */}
