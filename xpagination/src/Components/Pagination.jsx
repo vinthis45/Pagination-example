@@ -1,31 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from "./Pagination.module.css";
 
 const Pagination = () => {
   const perPage = 10;
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const memoizedData = useMemo(() => {
-    const cachedData = localStorage.getItem('cachedData');
-    if (cachedData) {
-      return JSON.parse(cachedData);
-    }
-    return data;
-  }, [data]);
-
-  useEffect(() => {
-    if (!isLoading) {
-      localStorage.setItem('cachedData', JSON.stringify(memoizedData));
-    }
-  }, [memoizedData, isLoading]);
 
   
-  useEffect(() => {
-    fetchData();
-  }, [currentPage]);
-
   const fetchData = async () => {
     try {
       const response = await fetch(
@@ -38,35 +19,39 @@ const Pagination = () => {
 
       const result = await response.json();
       setData(result);
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);  // Update loading state even on error
       alert('Failed to fetch data');
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, [currentPage]);
+
   const nextPage = () => {
-    if (currentPage < Math.ceil(data.length / perPage)) {
+    if(currentPage < Math.ceil(data.length / perPage)){
       setCurrentPage(currentPage + 1);
     }
+      
+
   };
 
   const prevPage = () => {
-    if (currentPage > 1) {
+    if(currentPage > 1){
       setCurrentPage(currentPage - 1);
     }
+      
   };
 
   const startIndex = (currentPage - 1) * perPage;
   const endIndex = startIndex + perPage;
-  const currentData = data.slice(startIndex, endIndex);
+  const currentData = useMemo(() => {
+    return data.slice(startIndex, endIndex);
+  }, [data, startIndex, endIndex]);
 
   return (
     <div className={styles.container}>
       <h1>Employee Data Table</h1>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
         <table className={styles.tableContainer}>
           {/* Table Header */}
           <thead className={styles.tableHead}>
@@ -89,7 +74,6 @@ const Pagination = () => {
             ))}
           </tbody>
         </table>
-      )}
       {/* Pagination Buttons */}
       <div>
         <button className={styles.prevButton} onClick={prevPage}>
